@@ -1,5 +1,5 @@
 """ 本程序是filter.py的后继程序，将筛选出来的推文里，转发自同一推文的进行合并 """
-""" 相同推文的判断标准是，推文A的10%处到60%处，这一段完整存在于推文B中，则A、B认为是相同推文 """
+""" 相同推文的判断标准是，推文A的10%处到60%处，这一段完整存在于推文B中，且A与Bc长度差异不超过20%，则A、B认为是相同推文 """
 import os
 import sys
 import jsonlines
@@ -68,7 +68,7 @@ for i in range(len(all_tweets)):
                     except:
                         # 如果在对应位置找不到推文，即上述try的内容出错，那意味着肯定不是同一个推文的retweet，直接看下一个推文即可
                         continue
-                    if text_original[round(0.1*len_original): round(0.6*len_original)] in text_j:
+                    if text_original[round(0.1*len_original): round(0.6*len_original)] in text_j and len(text_original) > 0.9*len(text_j) and len(text_original) < 1.1*len(text_j):
                         count += 1
                         output.append([all_tweets[j]["filename"], all_tweets[j]["created_at"], all_tweets[j]["user"]["screen_name"], all_tweets[j]["id_str"], text_j, count])
                         # all_tweets[j]["flag"] = True
@@ -102,7 +102,7 @@ for i in range(len(all_tweets)):
                     except:
                         # 如果在对应位置找不到推文，即上述try的内容出错，那意味着肯定不是同一个推文的retweet，直接看下一个推文即可
                         continue
-                    if text_original[round(0.1*len_original): round(0.6*len_original)] in text_j:
+                    if text_original[round(0.1*len_original): round(0.6*len_original)] in text_j and len(text_original) > 0.9*len(text_j) and len(text_original) < 1.1*len(text_j):
                         count += 1
                         output.append([all_tweets[j]["filename"], all_tweets[j]["created_at"], all_tweets[j]["user"]["screen_name"], all_tweets[j]["id_str"], text_j, count])
                         # all_tweets[j]["flag"] = True
